@@ -6,6 +6,7 @@ import additional_functions.validation
 import additional_functions.derivative
 import additional_functions.drow_graph
 import methods.method_chord
+import methods.simple_iter_method
 import tasks.task
 import sys
 
@@ -17,7 +18,7 @@ def from_keyboard(f, m, i):
             if not additional_functions.validation.validate_eps(e):
                 print("Точность не может быть меньше 0 или больше 1")
                 sys.exit(1)
-            if m == "1":
+            if m == "1" or m == "3":
                 a, b = map(float, input("Введите интервал через пробел: ").replace(',', '.').split())
                 if not additional_functions.validation.validate_interval(a, b):
                     print("Левая граница не может быть меньше или равна правой!")
@@ -26,20 +27,13 @@ def from_keyboard(f, m, i):
                     print("На интервале нет корней или больше 1 корня!")
                     sys.exit(1)
                 return e, a, b
-            elif m == "2" and i != "s":
-                x0 = float(input("Введите начальное приближение: ").replace(',', '.'))
-                df = additional_functions.derivative.fabric_df(tasks.task.get_function(f))
-                if not additional_functions.validation.validate_initial_guess(f, df, x0, e):
-                    print("Начальное приближение некорректно, вы попали в корень")
-                    sys.exit(1)
-                return e, x0
             elif m == "2" and i == "s":
                 x0, y0 = map(float, input("Введите x0 и y0 для системы через пробел: ").replace(',', '.').split())
                 if not additional_functions.validation.validate_initial_guess_system(tasks.task.get_system(f), x0, y0, e):
                     print("Начальное приближение некорректно, вы попали в корень")
                     sys.exit(1)
                 return e, x0, y0
-            elif m == "3":
+            elif m == "2":
                 x0 = float(input("Введите начальное приближение: ").replace(',', '.'))
                 if not additional_functions.validation.validate_initial_guess(f, None, x0, e):
                     print("Начальное приближение некорректно, вы попали в корень")
@@ -63,7 +57,7 @@ def from_file(filename, f, m, i):
         if not additional_functions.validation.validate_eps(e):
             print("Точность не может быть меньше 0 или больше 1")
             sys.exit(1)
-        if m == "1":
+        if m == "1" or m == "3":
             a, b = map(float, lines[1].replace(',', '.').split())
             if not additional_functions.validation.validate_interval(a, b):
                 print("Левая граница не может быть меньше или равна правой!")
@@ -72,20 +66,13 @@ def from_file(filename, f, m, i):
                 print("На интервале нет корней или больше 1 корня!")
                 sys.exit(1)
             return e, a, b
-        elif m == "2" and i != "s":
-            x0 = float(lines[1].replace(',', '.'))
-            df = additional_functions.derivative.fabric_df(tasks.task.get_function(f))
-            if not additional_functions.validation.validate_initial_guess(f, df, x0, e):
-                print("Начальное приближение некорректно, вы попали в корень")
-                sys.exit(1)
-            return e, x0
         elif m == "2" and i == "s":
             x0, y0 = map(float, lines[1].replace(',', '.').split())
             if not additional_functions.validation.validate_initial_guess_system(tasks.task.get_system(f), x0, y0, e):
                 print("Начальное приближение некорректно, вы попали в корень")
                 sys.exit(1)
             return e, x0, y0
-        elif m == "3":
+        elif m == "2":
             x0 = float(lines[1].replace(',', '.'))
             if not additional_functions.validation.validate_initial_guess(f, None, x0, e):
                 print("Начальное приближение некорректно, вы попали в корень")
@@ -106,6 +93,7 @@ def from_file(filename, f, m, i):
     except UnicodeDecodeError:
         print("Проблема с кодировкой файла")
         sys.exit(1)
+
 
 def start():
     try:
@@ -141,15 +129,31 @@ def start():
                                     file.write(f"Корень методом Хорд: {x_n:.6f}\n")
                                     file.write(f"Значение функции в корне: {function}\n")
                                     file.write(f"Кол-во итераций: {iter_count}\n")
+                                    print("Файл заполнен!")
                             print("Закройте окно с показом функции чтобы завершить программу")
                             additional_functions.drow_graph.plot_selector("single", f, a, b)
-                        elif m == "2" or m == "3":
-                            e, x0 = from_keyboard(f, m, i)
-
+                        elif m == "2":
+                            e, a, b = from_keyboard(f, m, i)
                             additional_functions.drow_graph.plot_selector("single", f, -5, 5)
+                        elif m == "3":
+                            e, a, b = from_keyboard(f, m, i)
+                            x_n, function, iter_count = methods.simple_iter_method.calc(f, a, b, e)
+                            if outer == "m":
+                                print(f"x: {x_n:.6f}")
+                                print(f"f(x): {function}")
+                                print(f"Кол-во итераций: {iter_count}")
+                            if outer == "f":
+                                with open("out.txt", "w") as file:
+                                    file.write("МЕТОД ПРОСТОЙ ИТЕРАЦИИ\n")
+                                    file.write(f"Корень методом простой итерации: {x_n:.6f}\n")
+                                    file.write(f"Значение функции в корне: {function}\n")
+                                    file.write(f"Кол-во итераций: {iter_count}\n")
+                                    print("Файл заполнен!")
+                            print("Закройте окно с показом функции чтобы завершить программу")
+                            additional_functions.drow_graph.plot_selector("single", f, a, b)
                     elif inp == "f":
                         print("Первая строка файла всегда должна быть значением точности >0 и <1")
-                        print("Вторая строка файла должна быть интервалом для метода хорд(два числа через пробел) или начальным приближением для всех остальных методов(одно число для уравнения и два для системы)")
+                        print("Вторая строка файла должна быть интервалом для метода хорд и простых итераций (два числа через пробел) или начальным приближением для всех остальных методов(одно число для уравнения и два для системы)")
                         filename = input("Введите имя файла: ").strip()
                         if m == "1":
                             e, a, b = from_file(filename, f, m, i)
@@ -164,12 +168,28 @@ def start():
                                     file.write(f"Корень методом Хорд: {x_n:.6f}\n")
                                     file.write(f"Значение функции в корне: {function}\n")
                                     file.write(f"Кол-во итераций: {iter_count}\n")
+                                    print("Файл заполнен!")
                             print("Закройте окно с показом функции чтобы завершить программу")
                             additional_functions.drow_graph.plot_selector("single", f, a, b)
-                        elif m == "2" or m == "3":
+                        elif m == "2":
                             e, x0 = from_file(filename, f, m, i)
                             additional_functions.drow_graph.plot_selector("single", f, -5, 5)
-
+                        elif m == "3":
+                            e, a, b = from_file(filename, f, m, i)
+                            x_n, function, iter_count = methods.simple_iter_method.calc(f, a, b, e)
+                            if outer == "m":
+                                print(f"x: {x_n:.6f}")
+                                print(f"f(x): {function}")
+                                print(f"Кол-во итераций: {iter_count}")
+                            if outer == "f":
+                                with open("out.txt", "w") as file:
+                                    file.write("МЕТОД ПРОСТОЙ ИТЕРАЦИИ\n")
+                                    file.write(f"Корень методом простой итерации: {x_n:.6f}\n")
+                                    file.write(f"Значение функции в корне: {function}\n")
+                                    file.write(f"Кол-во итераций: {iter_count}\n")
+                                    print("Файл заполнен!")
+                            print("Закройте окно с показом функции чтобы завершить программу")
+                            additional_functions.drow_graph.plot_selector("single", f, a, b)
         elif i == "s":
             f = ""
             while f != "1" and f != "2":
@@ -187,7 +207,7 @@ def start():
                         additional_functions.drow_graph.plot_selector("system", f, -5, 5)
                     elif inp == "f":
                         print("Первая строка файла всегда должна быть значением точности >0 и <1")
-                        print("Вторая строка файла должна быть интервалом для метода хорд(два числа через пробел) или начальным приближением для всех остальных методов(одно число для уравнения и два для системы)")
+                        print("Вторая строка файла должна быть интервалом для метода хорд и простых итераций (два числа через пробел) или начальным приближением для всех остальных методов(одно число для уравнения и два для системы)")
                         filename = input("Введите имя файла: ").strip()
                         e, x0, y0 = from_file(filename, f, "2", i)
                         additional_functions.drow_graph.plot_selector("system", f, -5, 5)

@@ -9,3 +9,7 @@ def fabric_df(f):
 
     return df
 
+
+def d_phi(func, lambda_):
+    return lambda x: 1 + lambda_ * func(x)
+
