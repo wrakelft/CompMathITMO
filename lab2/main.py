@@ -7,6 +7,7 @@ import additional_functions.derivative
 import additional_functions.drow_graph
 import methods.method_chord
 import methods.simple_iter_method
+import methods.newton_method
 import tasks.task
 import sys
 
@@ -133,7 +134,20 @@ def start():
                             print("Закройте окно с показом функции чтобы завершить программу")
                             additional_functions.drow_graph.plot_selector("single", f, a, b)
                         elif m == "2":
-                            e, a, b = from_keyboard(f, m, i)
+                            e, x0 = from_keyboard(f, m, i)
+                            x_n, function, iter_count = methods.newton_method.calc_newton(f, x0, e)
+                            if outer == "m":
+                                print(f"x: {x_n:.6f}")
+                                print(f"f(x): {function}")
+                                print(f"Кол-во итераций: {iter_count}")
+                            if outer == "f":
+                                with open("out.txt", "w") as file:
+                                    file.write("МЕТОД НЬЮТОНА\n")
+                                    file.write(f"Корень методом Ньютона: {x_n:.6f}\n")
+                                    file.write(f"Значение функции в корне: {function}\n")
+                                    file.write(f"Кол-во итераций: {iter_count}\n")
+                                    print("Файл заполнен!")
+                            print("Закройте окно с показом функции чтобы завершить программу")
                             additional_functions.drow_graph.plot_selector("single", f, -5, 5)
                         elif m == "3":
                             e, a, b = from_keyboard(f, m, i)
@@ -173,6 +187,19 @@ def start():
                             additional_functions.drow_graph.plot_selector("single", f, a, b)
                         elif m == "2":
                             e, x0 = from_file(filename, f, m, i)
+                            x_n, function, iter_count = methods.newton_method.calc_newton(f, x0, e)
+                            if outer == "m":
+                                print(f"x: {x_n:.6f}")
+                                print(f"f(x): {function}")
+                                print(f"Кол-во итераций: {iter_count}")
+                            if outer == "f":
+                                with open("out.txt", "w") as file:
+                                    file.write("МЕТОД НЬЮТОНА\n")
+                                    file.write(f"Корень методом Ньютона: {x_n:.6f}\n")
+                                    file.write(f"Значение функции в корне: {function}\n")
+                                    file.write(f"Кол-во итераций: {iter_count}\n")
+                                    print("Файл заполнен!")
+                            print("Закройте окно с показом функции чтобы завершить программу")
                             additional_functions.drow_graph.plot_selector("single", f, -5, 5)
                         elif m == "3":
                             e, a, b = from_file(filename, f, m, i)
