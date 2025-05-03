@@ -10,15 +10,15 @@ def f2(x):
 
 
 def f3(x):
-    return np.exp(x) - 3*x + 1
+    return np.e**-x - x**2
 
 
 def f_for_show():
-    return "1. 2.74x^3 - 1.93x^2 - 15.28x - 3.72 \n 2. 2x^3 + 3.41x^2 - 23.74x + 2.95 \n 3. e^x - 3x + 1"
+    return "1. 2.74x^3 - 1.93x^2 - 15.28x - 3.72 \n 2. 2x^3 + 3.41x^2 - 23.74x + 2.95 \n 3. e^-x - x^2"
 
 
 def s_for_show():
-    return "1. sin(x + 1) - y - 1.2 \n 2x + cosy - 2 \n 2. x^3 + y^2 - 10 \n x * y + y - 5"
+    return "1. sin(x + 1) - y - 1.2 \n 2x + cosy - 2 \n 2. sin(x + y) - 1.1x - 0.1 \n x^2 + y^2 - 1"
 
 
 def s11(x, y):
@@ -30,11 +30,11 @@ def s12(x, y):
 
 
 def s21(x, y):
-    return x**3 + y**2 - 10
+    return np.sin(x + y) - 1.1*x - 0.1
 
 
 def s22(x, y):
-    return x * y + y - 5
+    return x**2 + y**2 - 1
 
 
 def get_function(f):

@@ -8,6 +8,7 @@ import additional_functions.drow_graph
 import methods.method_chord
 import methods.simple_iter_method
 import methods.newton_method
+import methods.newton_for_system_method
 import tasks.task
 import sys
 
@@ -231,18 +232,30 @@ def start():
                         outer = input("Выберите куда вывести результаты. f - в файл, m - на экран: ")
                     if inp == "k":
                         e, x0, y0 = from_keyboard(f, "2", i)
+                        x, y, iter_count, x_err, y_err = methods.newton_for_system_method.newton_system_calc(f, x0, y0, e)
+                        if outer == "m":
+                            print(f"Вектор неизвестных: {x:.6f}, {y:.6f}")
+                            print(f"Кол-во итераций: {iter_count}")
+                            print(f"Вектор погрешностей: {x_err:.6f}, {y_err:.6f}")
                         additional_functions.drow_graph.plot_selector("system", f, -5, 5)
+                        print("Закройте окно с показом функции чтобы завершить программу")
                     elif inp == "f":
                         print("Первая строка файла всегда должна быть значением точности >0 и <1")
-                        print("Вторая строка файла должна быть интервалом для метода хорд и простых итераций (два числа через пробел) или начальным приближением для всех остальных методов(одно число для уравнения и два для системы)")
+                        print("Вторая строка файла должна быть начальным приближением(два числа для системы)")
                         filename = input("Введите имя файла: ").strip()
                         e, x0, y0 = from_file(filename, f, "2", i)
+                        x, y, iter_count, x_err, y_err = methods.newton_for_system_method.newton_system_calc(f, x0, y0, e)
+                        with open("out.txt", "w") as file:
+                            file.write("СИСТЕМА МЕТОДОМ НЬЮТОНА\n")
+                            file.write(f"Вектор неизвестных: {x:.6f}, {y:.6f}\n")
+                            file.write(f"Кол-во итераций: {iter_count}\n")
+                            file.write(f"Вектор погрешностей: {x_err:.6f}, {y_err:.6f}\n")
+                            print("Файл заполнен!")
+                        print("Закройте окно с показом функции чтобы завершить программу")
                         additional_functions.drow_graph.plot_selector("system", f, -5, 5)
-                        # продолжение решения
     except EOFError:
         print("Завершаем выполнение программы.")
         sys.exit(0)
-
 
 
 if __name__ == '__main__':

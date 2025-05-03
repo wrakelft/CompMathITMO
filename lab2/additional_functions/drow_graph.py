@@ -51,6 +51,7 @@ def format_eq(func):
     name = func.__name__
     name = name.replace('s11', 'sin(x + 1) - y - 1.2')
     name = name.replace('s12', '2x + cosy - 2')
-    name = name.replace('s21', 'x^3 + y^2 - 10')
-    name = name.replace('s22', 'x * y + y - 5')
+    name = name.replace('s21', 'sin(x + y) - 1.1x - 0.1')
+    name = name.replace('s22', 'x^2 + y^2 - 1')
     return name
+
