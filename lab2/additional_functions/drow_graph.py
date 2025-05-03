@@ -12,6 +12,8 @@ def plot_single_f(func, a, b):
     plt.plot(x, y, label=func.__name__)
     plt.axhline(0, color='black', linewidth=0.5)
     plt.grid(True)
+    plt.xlabel('x')
+    plt.ylabel('y')
     plt.legend()
     plt.show()
 
