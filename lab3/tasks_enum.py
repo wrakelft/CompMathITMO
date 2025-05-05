@@ -3,10 +3,10 @@ import math
 
 
 class Functions(Enum):
-    one = ("-x^3 - x^2 - 2x + 1", lambda x: -x**3 - x**2 - 2*x + 1, lambda x: -(x**4)/4 - (x**3)/3 - x**2 + x)
-    two = ("5x^2 + 3x", lambda x: 5*x**2 + 3*x, lambda x: (5*x**3)/3 + (3*x**2)/2)
-    three = ("cos(x) + x", lambda x: math.cos(x) + x, lambda x: math.sin(x) + (x**2)/2)
-    four = ("sin(x)", lambda x: math.sin(x), lambda x: -math.cos(x))
+    one = ("-x^3 - x^2 - 2x + 1", lambda x: -x**3 - x**2 - 2*x + 1)
+    two = ("5x^2 + 3x", lambda x: 5*x**2 + 3*x)
+    three = ("cos(x) + x", lambda x: math.cos(x) + x)
+    four = ("sin(x)", lambda x: math.sin(x))
 
     @classmethod
     def get_func_lambda(cls, name):
