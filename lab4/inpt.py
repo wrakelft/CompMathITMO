@@ -1,4 +1,12 @@
 import sys
+import numpy as np
+
+
+def check_input_data(x, y):
+    if np.all(x == 0) or np.all(y == 0):
+        raise ValueError("Все значения x или y равны нулю")
+    if len(np.unique(x)) != len(x) or len(np.unique(y)) != len(y):
+        raise ValueError("Среди x y есть неуникальные числа")
 
 
 def from_keyboard():
@@ -22,8 +30,12 @@ def from_keyboard():
             if len(x) != p or len(y) != p:
                 print("Не совпадает кол-во точек")
                 sys.exit(0)
-            return x, y
-        except ValueError:
+            x = np.array(x)
+            y = np.array(y)
+            check_input_data(x, y)
+            return x, y, p
+        except ValueError as e:
+            print(e)
             print("Вводите числа! Xi Yi - два в одной строке через пробел, кол-во точек одно целое число")
         except EOFError:
             print("Завершаем выполнение программы.")
@@ -38,7 +50,8 @@ def from_file(filename):
                 strp = line.strip()
                 if strp:
                     lines.append(strp)
-            if len(lines) < 6 or len(lines) > 12:
+            p = len(lines)
+            if p < 8 or p > 12:
                 print("Неверная структура данных в файле!")
                 sys.exit(1)
             x = []
@@ -50,8 +63,12 @@ def from_file(filename):
                     sys.exit(1)
                 x.append(float(parts[0]))
                 y.append(float(parts[1]))
-            return x, y
-    except ValueError:
+            x = np.array(x)
+            y = np.array(y)
+            check_input_data(x, y)
+            return x, y, p
+    except ValueError as e:
+        print(e)
         print("Вводите в файле числа! Xi Yi - два в одной строке через пробел")
         sys.exit(1)
     except EOFError:

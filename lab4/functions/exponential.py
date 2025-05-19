@@ -2,10 +2,17 @@ import numpy as np
 import functions.linear as linear
 
 
-def calc_exponential(xm, ym):
+def calc_exponential(xm, ym, p):
     y_log = np.log(ym)
-    a_n, b_n = linear.calc_linear(xm, y_log)
-    a = np.exp(a_n)
-    b = b_n
+    a_n, b_n, n, e, s, q, R, r = linear.calc_linear(xm, y_log, p)
+    a = np.exp(b_n)
+    b = a_n
 
-    return a, b
+    n = a * np.exp(b * xm)
+    e = n - ym
+    s = np.sum((n - ym) ** 2)
+    q = np.sqrt(s / p)
+    xfis = np.sum(n) / p
+    R = 1 - ((np.sum((ym - n) ** 2)) / (np.sum((ym - xfis) ** 2)))
+
+    return a, b, n, e, s, q, R
