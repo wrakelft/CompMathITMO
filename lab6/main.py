@@ -1,9 +1,9 @@
 import data.start
-import functions.drow
+import data.tasks
 
 
 def run():
-    return 0
+    data.start.user_inout()
 
 
 if __name__ == '__main__':

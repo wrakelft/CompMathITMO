@@ -10,11 +10,11 @@ def f2(x, y):
 
 
 def f3(x, y):
-    return x ** 2 - y
+    return x + y
 
 
 def f_for_show():
-    return "1. 2y + e^x \n 2. y/x \n 3. x^2 - y"
+    return "1. 2y + e^x \n 2. y/x \n 3. x + y"
 
 
 def get_function(f):

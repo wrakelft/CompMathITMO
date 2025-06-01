@@ -1,5 +1,5 @@
 import sys
-import validator
+import data.validator
 
 
 def from_keyboard(f):
@@ -9,16 +9,16 @@ def from_keyboard(f):
             if f == "2" and x0 == 0:
                 print("Для этого уравнения x0 не может быть 0")
                 raise ValueError
-            elif not validator.validate_interval(x0, xn):
+            elif not data.validator.validate_interval(x0, xn):
                 print("Левая граница не может быть меньше или равна правой!")
                 raise ValueError
             y0 = float(input(f"Введите начальное значение y(x0) = y({x0}):").replace(',', '.'))
             h = float(input("Введите шаг h > 0: ").replace(',', '.'))
-            if not validator.validate_h(h, x0, xn):
+            if not data.validator.validate_h(h, x0, xn):
                 print("Шаг должен быть положительным и меньше интервала")
                 raise ValueError
             e = float(input("Введите точность системы >0 и <1: ").replace(',', '.'))
-            if not validator.validate_eps(e):
+            if not data.validator.validate_eps(e):
                 print("Точность не может быть меньше 0 или больше 1")
                 raise ValueError
             return x0, xn, y0, h, e
