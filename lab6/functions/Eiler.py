@@ -11,6 +11,8 @@ def eiler_calc(f, x0, xn, y0, h):
     while xv[-1] < xn:
         xi = xv[-1]
         yi = yv[-1]
+        if xi + h > xn:
+            break
         yi_pl = yi + h * func(xi, yi)
         xi_pl = xi + h
         xv.append(xi_pl)
