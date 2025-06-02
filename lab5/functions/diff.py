@@ -16,7 +16,18 @@ def diff_table(x, y):
 def print_diff_table(table):
     print("Таблица конечных разностей:")
     print("[")
-    for row in table[:-1]:  # Все строки кроме последней
+    for row in table[:-1]:
         print(f" {row},")
-    print(f" {table[-1]}")  # Последняя строка без запятой
+    print(f" {table[-1]}")
     print("]")
+
+
+def convert_table(table):
+    n = len(table)
+    diffs = []
+    for order in range(n):
+        diffs_order = []
+        for i in range(n - order):
+            diffs_order.append(table[i][order + 1])
+        diffs.append(diffs_order)
+    return diffs
